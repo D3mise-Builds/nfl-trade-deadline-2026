@@ -1,34 +1,28 @@
-# NFL Deadline Command — 2026
+# NFL Deadline Command — auto-sync upgrade
 
-## What is included
+This is an **upgrade for your already-running GitHub + Render website**, not a new website. Keep the same GitHub repository and Render URL.
 
-- `index.html` — polished responsive standalone HTML dashboard with sticky countdown to **Nov 10, 2026 at 4 PM New York time**, built-in verified trade snapshot, team logos, player cards, pick breakdowns, grades, filters, detail popups, and sharing controls.
-- `server.py` — optional Flask host with a server-side seven-minute news-source check, ESPN roster-profile enrichment, and `/api/trades` endpoint.
-- `trades.json` — editable seed records for seven confirmed trades plus one reported agreement, as verified Nov 5, 2026.
-- `render.yaml`, `requirements.txt` — basic one-click-compatible Render deployment configuration.
+## Upload the updated files
+1. Unzip this package locally.
+2. In your **existing GitHub repository**, upload `server.py`, `sync_trades.py`, `index.html`, `trades.json`, `README.md`, `requirements.txt`, and `render.yaml` directly to the repository root. Confirm replacements and commit.
+3. To upload the hidden `.github/workflows/refresh-trades.yml` file, the easiest GitHub browser approach is: **Add file → Create new file**, enter `.github/workflows/refresh-trades.yml` in the filename field, paste the contents from this package, and commit. Alternatively upload the `.github` folder from an extracted copy, ensuring your file explorer shows hidden directories.
+4. In GitHub: **Settings → Actions → General → Workflow permissions**, select **Read and write permissions** if editable; save. If your organization blocks this option, a repository admin must allow it.
+5. GitHub: **Actions → Refresh confirmed NFL trades → Run workflow**. Review the run's result.
+6. Render will normally redeploy when GitHub files change. Check Render's **Events / Logs** for a successful deploy, then refresh your existing public URL.
 
-## Run on your computer
+## How updates operate
+- GitHub Actions is scheduled every **10 minutes**, **best-effort** (GitHub may delay scheduled jobs). It fetches the NFL.com tracker, parses an exact *date + 2 teams + complete incoming packages* and only commits when it finds a new completed deal or an existing agreement is confirmed. It does not invent exact times or draft pick numbers.
+- The existing Render API also checks while the site is visited (throttled to seven minutes); those in-memory updates can be lost when Render Free sleeps. The GitHub Actions file provides persistent changes through Git commits.
+- GitHub Actions can be skipped or delayed, and sports sites can block automated fetches or change HTML. **This is not a guarantee of 100% coverage**, and new trades without a complete package or official NFL entry will not appear immediately. Inspect the Actions log if it reports an error; the existing verified data remains available.
+- ESPN enrichment is via an unofficial roster endpoint and may be incomplete. 2026 position stats on the page are still a dated snapshot, **not live player stats**. CBS is linked for corroboration/editorial grades; automatic CBS trade parsing and grade extraction are not implemented.
 
-1. Install Python 3.10+.
-2. In this folder, run `pip install -r requirements.txt`.
-3. Run `python server.py`.
-4. Visit `http://localhost:5000`.
+## What to test
+- The current Render URL and `/api/health` should load.
+- GitHub Actions tab should show the `Refresh confirmed NFL trades` workflow. Manually trigger it and inspect its log. If it says the site couldn't be parsed, no trade data is overwritten.
+- `trades.json` in GitHub gains a new commit **only when newly confirmed official trades are detected**, not every ten minutes.
 
-## Make it shareable
+## Source
+- Official transactions: https://www.nfl.com/news/nfl-trade-deadline-track-every-move-since-start-of-2026-regular-season
+- Other info / grades for review: https://www.cbssports.com/nfl/news/2026-nfl-trade-deadline-tracker-latest-deals-grades/
 
-Push the contents of this folder to a GitHub repository, create a Render Web Service from the repo, and deploy using the included `render.yaml`. Send people the resulting Render URL. The server must be running for live source polling; uploading `index.html` alone to GitHub Pages or Netlify shows the built-in snapshot, not live transaction sync.
-
-## Important data limitations
-
-- An HTML-only page cannot reliably pull ESPN and CBS article content because browser cross-origin restrictions and publisher anti-bot controls can block requests. The included Python server performs checks. Hosting is **not configured/deployed automatically**.
-- Every page view requests the backend; the backend throttles news checks to once every **420 seconds**. The page itself re-requests every seven minutes while open. This is polling, not immediate push updates. Sources can block scraping, change formatting, or omit transactions; 100% coverage is not guaranteed.
-- The backend currently detects new **fully parseable** trades on the official NFL tracker. Deals lacking identifiable recipients, complete packages, or dates may require manually editing `trades.json`. CBS serves as a reachability/cross-check source, not an independent parsed trade feed. The user-facing status distinguishes source success from fallback mode.
-- Player profile enrichment uses public, undocumented ESPN roster JSON. If unavailable, known profile information in the HTML or explicit “awaiting data” placeholders remain visible. Position-specific 2026 stats are included as a checked Nov 5 reference snapshot where available, but are not a live statistics feed. Offensive linemen show games and games started; this is not a blocking-efficiency measure. No fake stats are generated.
-- Draft round and year are not the same as exact overall pick position: 2027/2028 exact slots are **not known** yet. Popups show what each club obtained in the depicted transaction, not complete team draft inventories.
-- Grades are CBS Sports **editorial grades**, and the winner indication is a comparison of those grades. It is not a proprietary objective valuation algorithm.
-- The source trackers conflicted on the sixth/seventh-round pieces in the Marvin Harrison Jr. trade; the NFL.com package is used in the provided snapshot. The Brissett move was a reported agreement with compensation TBD as of Nov 5.
-- CSS and fonts are delivered from internet providers; profile and team images use ESPN CDN. Team logos and player likenesses are owned by their respective rights holders. This is an unofficial fan project.
-
-## Data maintenance
-
-To add or fix a transaction, edit `trades.json` and redeploy. Receives are keyed by NFL team abbreviation, with entries of type `player`, `pick`, or `unknown`. Each trade must have two team codes, a date, status, and sources.
+The tracker is an unofficial fan project, not affiliated with the NFL, ESPN, or CBS Sports.

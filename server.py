@@ -9,6 +9,7 @@ from pathlib import Path
 from flask import Flask, jsonify, send_from_directory
 import requests
 from bs4 import BeautifulSoup
+from sync_trades import parse_article, merge
 
 HERE = Path(__file__).parent
 app = Flask(__name__, static_folder=str(HERE))
@@ -146,21 +147,21 @@ def refresh_cache():
         new_trades = []
         try:
             nfl_soup = fetch_html(NFL)
-            new_trades = parse_nfl_new(nfl_soup, state['trades'])
-            ok = 'RECEIVES' in nfl_soup.get_text(' ',strip=True).upper()
+            new_trades = parse_article(str(nfl_soup))
+            ok = len(new_trades) >= 4
         except Exception:
             pass
         try:
             cbs_soup = fetch_html(CBS)
-            ok = ok or ('Nov. 10' in cbs_soup.get_text(' ',strip=True))
+            # Reachability of CBS is not a validated official transaction sync.
         except Exception:
             pass
         with _lock:
             known_ids = {t['id'] for t in state['trades']}
-            state['trades'].extend(t for t in new_trades if t['id'] not in known_ids)
+            merge(state['trades'], new_trades)
             state['last_checked'] = datetime.now(timezone.utc).isoformat()
             state['source_ok'] = ok
-            state['note'] = ('Sources reachable. NFL transaction check every 7 minutes; player profiles refresh twice daily. Newly formatted trades are added when their full package and date can be extracted.' if ok else 'News sites unavailable or blocked this check. Showing verified trades and profiles already cached; not claiming a successful live sync.')
+            state['note'] = ('Official NFL page parsed. Checks throttled to every 7 minutes while the server is active; GitHub Actions can commit verified changes on a ten-minute schedule.' if ok else 'Official NFL trade parsing unavailable. Showing last recorded trades; check the source and GitHub Actions log.')
     if check_profiles:
         profiles = enrich_profiles(state['trades'])
         with _lock:
