@@ -1,0 +1,23 @@
+{
+  "Jeffery Simmons": {
+    "place": 2,
+    "group": "DT",
+    "kind": "ESPN 2026 top-10 positional survey",
+    "as_of": "2026-07-09",
+    "source": "https://www.espn.com/nfl/story/_/id/49239989/ranking-nfl-top-10-defensive-tackles-2026-execs-coaches-scouts"
+  },
+  "Quenton Nelson": {
+    "place": 2,
+    "group": "Interior OL",
+    "kind": "ESPN 2026 top-10 positional survey",
+    "as_of": "2026-07-12",
+    "source": "https://abc7.com/post/execs-coaches-scouts-rank-top-nfl-guards-centers-2026/19491154/"
+  },
+  "DeForest Buckner": {
+    "honorable_mention": true,
+    "group": "DT",
+    "kind": "ESPN 2026 top-10 positional survey",
+    "as_of": "2026-07-09",
+    "source": "https://www.espn.com/nfl/story/_/id/49239989/ranking-nfl-top-10-defensive-tackles-2026-execs-coaches-scouts"
+  }
+}

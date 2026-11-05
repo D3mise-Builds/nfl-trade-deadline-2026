@@ -14,13 +14,14 @@ from sync_trades import parse_article, merge
 HERE = Path(__file__).parent
 app = Flask(__name__, static_folder=str(HERE))
 SEED = json.loads((HERE / 'trades.json').read_text(encoding='utf-8'))
+ESPN_POSITION_RANKINGS = json.loads((HERE / 'espn_rankings.json').read_text(encoding='utf-8'))
 NFL = 'https://www.nfl.com/news/nfl-trade-deadline-track-every-move-since-start-of-2026-regular-season'
 CBS = 'https://www.cbssports.com/nfl/news/2026-nfl-trade-deadline-tracker-latest-deals-grades/'
 HEADERS = {'User-Agent': 'Mozilla/5.0 (compatible; DeadlineCommand/1.0; public-sports-monitor)'}
 TEAM_NAME = {'CARDINALS':'ari','RAVENS':'bal','BEARS':'chi','TITANS':'ten','49ERS':'sf','COLTS':'ind','SEAHAWKS':'sea','TEXANS':'hou','EAGLES':'phi','COWBOYS':'dal','STEELERS':'pit','GIANTS':'nyg','VIKINGS':'min',
 'BILLS':'buf','DOLPHINS':'mia','PATRIOTS':'ne','JETS':'nyj','BENGALS':'cin','BROWNS':'cle','JAGUARS':'jax','CHIEFS':'kc','RAIDERS':'lv','BRONCOS':'den','CHARGERS':'lac','LIONS':'det','PACKERS':'gb','FALCONS':'atl','PANTHERS':'car','SAINTS':'no','BUCCANEERS':'tb','RAMS':'lar','COMMANDERS':'wsh'}
 # Two known currently inconsistent reports are deliberately not automatically overwritten.
-state = {'trades': copy.deepcopy(SEED), 'profiles': {}, 'last_checked': None, 'source_ok': False, 'note': 'Verified seed trades loaded; initial verification pending.'}
+state = {'trades': copy.deepcopy(SEED), 'profiles': {name: {'espnPositionRanking': rank} for name, rank in ESPN_POSITION_RANKINGS.items()}, 'last_checked': None, 'source_ok': False, 'note': 'Verified seed trades loaded; initial verification pending.'}
 _lock = threading.Lock()
 _next_trade_check = 0
 _next_profile_check = 0
@@ -165,7 +166,8 @@ def refresh_cache():
     if check_profiles:
         profiles = enrich_profiles(state['trades'])
         with _lock:
-            state['profiles'].update(profiles)
+            for name, profile in profiles.items():
+                state['profiles'].setdefault(name, {}).update(profile)
 
 
 @app.route('/')
