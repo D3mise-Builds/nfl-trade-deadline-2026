@@ -110,6 +110,46 @@
     ]
   },
   {
+    "id": "nfl-2026-11-09-jordan-davis",
+    "date": "2026-11-09",
+    "time": null,
+    "status": "completed",
+    "headline": "Jaguars continue adding beef to defensive front",
+    "teams": [
+      "jax",
+      "phi"
+    ],
+    "receives": {
+      "jax": [
+        {
+          "type": "player",
+          "name": "Jordan Davis",
+          "position": "DT"
+        }
+      ],
+      "phi": [
+        {
+          "type": "pick",
+          "year": 2027,
+          "round": 1
+        },
+        {
+          "type": "pick",
+          "year": 2029,
+          "round": 2
+        }
+      ]
+    },
+    "grade": {
+      "jax": null,
+      "phi": null
+    },
+    "analysis": "Trade compensation reported by NFL.com. Independent grades and detailed evaluation not yet available for this newly detected deal.",
+    "sources": [
+      "https://www.nfl.com/news/nfl-trade-deadline-track-every-move-since-start-of-2026-regular-season"
+    ]
+  },
+  {
     "id": "nfl-2026-11-06-jacoby-brissett",
     "date": "2026-11-06",
     "time": null,
