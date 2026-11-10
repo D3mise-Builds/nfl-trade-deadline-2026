@@ -70,6 +70,46 @@
     ]
   },
   {
+    "id": "nfl-2026-11-10-amani-hooker",
+    "date": "2026-11-10",
+    "time": null,
+    "status": "completed",
+    "headline": "Bills trade for NFL's INT leader",
+    "teams": [
+      "buf",
+      "ten"
+    ],
+    "receives": {
+      "buf": [
+        {
+          "type": "player",
+          "name": "Amani Hooker",
+          "position": "S"
+        },
+        {
+          "type": "pick",
+          "year": 2027,
+          "round": 5
+        }
+      ],
+      "ten": [
+        {
+          "type": "pick",
+          "year": 2027,
+          "round": 2
+        }
+      ]
+    },
+    "grade": {
+      "buf": null,
+      "ten": null
+    },
+    "analysis": "Trade compensation reported by NFL.com. Independent grades and detailed evaluation not yet available for this newly detected deal.",
+    "sources": [
+      "https://www.nfl.com/news/nfl-trade-deadline-track-every-move-since-start-of-2026-regular-season"
+    ]
+  },
+  {
     "id": "nfl-2026-11-09-jessie-bates",
     "date": "2026-11-09",
     "time": null,
