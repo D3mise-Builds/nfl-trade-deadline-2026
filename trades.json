@@ -35,6 +35,41 @@
     ]
   },
   {
+    "id": "nfl-2026-11-10-keenan-allen",
+    "date": "2026-11-10",
+    "time": null,
+    "status": "completed",
+    "headline": "Niners add another veteran to WR corps",
+    "teams": [
+      "sf",
+      "ind"
+    ],
+    "receives": {
+      "sf": [
+        {
+          "type": "player",
+          "name": "Keenan Allen",
+          "position": "WR"
+        }
+      ],
+      "ind": [
+        {
+          "type": "pick",
+          "year": 2027,
+          "round": 6
+        }
+      ]
+    },
+    "grade": {
+      "sf": null,
+      "ind": null
+    },
+    "analysis": "Trade compensation reported by NFL.com. Independent grades and detailed evaluation not yet available for this newly detected deal.",
+    "sources": [
+      "https://www.nfl.com/news/nfl-trade-deadline-track-every-move-since-start-of-2026-regular-season"
+    ]
+  },
+  {
     "id": "nfl-2026-11-09-jessie-bates",
     "date": "2026-11-09",
     "time": null,
